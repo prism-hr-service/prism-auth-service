@@ -76,7 +76,7 @@ func (s *Storage) GetUser(ctx context.Context, email string) (models.User, error
 	const prefix = "storage.postgresql.GetUser"
 
 	var user models.User
-	err := pgxscan.Select(ctx, s.conn, &user, "SELECT id, email, password_hash, role, is_active, created_at FROM users WHERE email=$1", email)
+	err := pgxscan.Get(ctx, s.conn, &user, "SELECT id, email, password_hash, role, is_active, created_at FROM users WHERE email=$1", email)
 	if err != nil {
 		if err == pgx.ErrNoRows {
 			return models.User{}, fmt.Errorf("%s: %w", prefix, storage.ErrUserNotFound)
