@@ -58,7 +58,7 @@ func (s *Storage) CreateUser(ctx context.Context, email string, passwordHash str
 	}
 
 	var id int64
-	err = tx.QueryRow(ctx, "INSERT INTO users(email, password_hash, role) VALUES($1,$2,$3)").Scan(&id)
+	err = tx.QueryRow(ctx, "INSERT INTO users(email, password_hash, role) VALUES($1,$2,$3)", email, passwordHash, models.Default).Scan(&id)
 	if err != nil {
 		return 0, fmt.Errorf("%s: %w", prefix, err)
 	}
